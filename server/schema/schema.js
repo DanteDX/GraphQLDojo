@@ -1,5 +1,5 @@
 const graphql = require('graphql');
-const {GraphQLObjectType,GraphQLString,GraphQLSchema} = graphql;
+const {GraphQLObjectType,GraphQLString,GraphQLSchema,GraphQLList} = graphql;
 const _ = require('lodash');
 
 const BookData = [
@@ -22,12 +22,11 @@ const RootQuery = new GraphQLObjectType({
     name:'RootQueryType',
     fields:{
         book:{
-            type: BookType,
+            type: new GraphQLList(BookType), // before it was just (type: BookType)
             args:{id:{type: GraphQLString}},
             resolve(parent,args){
-                return _.find(BookData,{id:args.id});
-                // let result = BookData.filter(eachBook => eachBook.id === args.id);
-                // return result;
+                // return _.find(BookData,{id:args.id});
+                return BookData.filter(eachBook => eachBook.id === args.id);
             }
         }
     }
