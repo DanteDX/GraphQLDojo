@@ -1,10 +1,11 @@
 const graphql = require('graphql');
 const {GraphQLObjectType,GraphQLString,GraphQLSchema} = graphql;
+const _ = require('lodash');
 
-let BookData = [
+const BookData = [
     {id:'1',name:'BookOne',genre:'Science'},
     {id:'2',name:'BookTwo',genre:'Physics'},
-    {id:'3',name:'BookThree',genre:'Chemistry'},
+    {id:'2',name:'BookThree',genre:'Chemistry'},
     {id:'4',name:'BookFour',genre:'Biology'}
 ];
 
@@ -24,7 +25,9 @@ const RootQuery = new GraphQLObjectType({
             type: BookType,
             args:{id:{type: GraphQLString}},
             resolve(parent,args){
-                return BookData.filter(eachBook => eachBook.id === args.id);
+                return _.find(BookData,{id:args.id});
+                // let result = BookData.filter(eachBook => eachBook.id === args.id);
+                // return result;
             }
         }
     }
