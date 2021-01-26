@@ -5,12 +5,13 @@ const {
     GraphQLInt
 } = graphql;
 // const _ = require('lodash');
+// no need of lodash
 
 const BookData = [
-    {id:'1',name:'BookOne',genre:'Science'},
-    {id:'2',name:'BookTwo',genre:'Physics'},
-    {id:'2',name:'BookThree',genre:'Chemistry'},
-    {id:'4',name:'BookFour',genre:'Biology'}
+    {id:'1',name:'BookOne',genre:'Science',authorId:'1'},
+    {id:'2',name:'BookTwo',genre:'Physics',authorId:'2'},
+    {id:'2',name:'BookThree',genre:'Chemistry',authorId:'3'},
+    {id:'4',name:'BookFour',genre:'Biology',authorId:'4'}
 ];
 
 const AuthorData = [
@@ -19,15 +20,6 @@ const AuthorData = [
     {id:'3',name:'Piyal',age:40},
     {id:'1',name:'Zarif',age:33}
 ];
-
-const BookType = new GraphQLObjectType({
-    name:'Book',
-    fields:() => ({
-        id:{type: GraphQLID}, // previously it was, GraphQLString
-        name:{type: GraphQLString},
-        genre: {type: GraphQLString}
-    })
-});
 
 const AuthorType = new GraphQLObjectType({
     name:'Author',
@@ -38,10 +30,28 @@ const AuthorType = new GraphQLObjectType({
     })
 });
 
+const BookType = new GraphQLObjectType({
+    name:'Book',
+    fields:() => ({
+        id:{type: GraphQLID}, // previously it was, GraphQLString
+        name:{type: GraphQLString},
+        genre: {type: GraphQLString},
+        author:{
+            type: new GraphQLList(AuthorType),
+            resolve(parent,args){
+                console.log(parent);
+                return AuthorData.filter(eachAuthor => eachAuthor.id === parent.authorId);
+            }
+        }
+    })
+});
+
+
+
 const RootQuery = new GraphQLObjectType({
     name:'RootQueryType',
     fields:{
-        book:{
+        book:{ 
             type: new GraphQLList(BookType), // before it was just (type: BookType)
             args:{id:{type: GraphQLID}}, // previously it was, GraphQLString
             resolve(parent,args){
@@ -49,10 +59,10 @@ const RootQuery = new GraphQLObjectType({
                 return BookData.filter(eachBook => eachBook.id === args.id);
             }
         },
-        author:{
-            type: new GraphQLList(AuthorType),
-            args:{id:{type: GraphQLID}},
-            resolve(parent,args){
+        author:{ // this field will be followed while returning data
+            type: new GraphQLList(AuthorType), // what kind of data it will return
+            args:{id:{type: GraphQLID}}, // what argument it will take
+            resolve(parent,args){   // the functional process
                 return AuthorData.filter(eachAuthor => eachAuthor.id === args.id);
             }
         }
