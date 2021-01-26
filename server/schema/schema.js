@@ -11,7 +11,7 @@ const BookData = [
     {id:'1',name:'BookOne',genre:'Science',authorId:'1'},
     {id:'2',name:'BookTwo',genre:'Physics',authorId:'2'},
     {id:'2',name:'BookThree',genre:'Chemistry',authorId:'3'},
-    {id:'4',name:'BookFour',genre:'Biology',authorId:'4'}
+    {id:'4',name:'BookFour',genre:'Biology',authorId:'3'}
 ];
 
 const AuthorData = [
@@ -26,7 +26,13 @@ const AuthorType = new GraphQLObjectType({
     fields:() => ({
         id:{type: GraphQLID}, // previously it was, GraphQLString
         name:{type: GraphQLString},
-        age: {type: GraphQLInt}
+        age: {type: GraphQLInt},
+        books:{
+            type: new GraphQLList(BookType),
+            resolve(parent,args){
+                return BookData.filter(eachBook => eachBook.authorId === parent.id );
+            }
+        }
     })
 });
 
@@ -38,7 +44,7 @@ const BookType = new GraphQLObjectType({
         genre: {type: GraphQLString},
         author:{
             type: new GraphQLList(AuthorType),
-            resolve(parent,args){
+            resolve: (parent,args) => {
                 console.log(parent);
                 return AuthorData.filter(eachAuthor => eachAuthor.id === parent.authorId);
             }
