@@ -88,6 +88,54 @@ const RootQuery = new GraphQLObjectType({
         }
     }
 });
+
+
+// Mutation is Adding/Changing/Deleting Data
+const Mutation = new GraphQLObjectType({
+    name:'Mutation',
+    fields:{
+        addAuthor:{
+            type: AuthorType,
+            args:{
+                name: {type: GraphQLString},
+                age: {type: GraphQLInt}
+            },
+            resolve: async(parent,args) =>{
+                let author = new Author({
+                    name: args.name,
+                    age: args.age
+                });
+                try{
+                    const res = await author.save();
+                    return res;
+                }catch(err){
+                    return err;
+                }
+            }
+        },
+        addBook:{
+            type: BookType,
+            args:{
+                name: {type: GraphQLString},
+                genre: {type: GraphQLString},
+            },
+            resolve: async(parent,args) =>{
+                const {name, genre} = args;
+                let book = new Book({name,genre});
+                try{
+                    let res = await book.save();
+                    return res;
+                }catch(err){
+                    return err;
+                }
+            }
+        }
+    }
+})
+
+
+
 module.exports = new GraphQLSchema({
-    query: RootQuery
+    query: RootQuery,
+    mutation: Mutation
 });
