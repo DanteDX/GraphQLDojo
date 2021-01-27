@@ -4,7 +4,7 @@ import {graphql} from 'react-apollo';
 import {getAuthorsQuery} from "../../Queries/Queries";
 
 function AuthorList(props){
-    console.log(props);
+    // console.log(props);
     return(
         <div className="authorWrapper">
             <p>This is the AuthorList component</p>
