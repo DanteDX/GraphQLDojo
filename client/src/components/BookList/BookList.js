@@ -1,27 +1,14 @@
 import React from 'react';
 import "./BookList.scss";
-import {gql} from "apollo-boost";
 import {graphql} from 'react-apollo';
-
-const getBooksQuery = gql`
-    {
-        books{
-            name
-            genre 
-            authorId
-            author{
-                name
-                age
-            }
-        }
-    }
-`;
+import {getBooksQuery} from "../../Queries/Queries";
 
 function BookList(props){
     console.log(props);
     return(
         <div className="bookWrapper">
             <p>This is the BookList component</p>
+            {(props.data.loading ? <p>Still Loading</p> : <p>Books data Loaded</p>)}
         </div>
 
     )
