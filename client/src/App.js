@@ -1,4 +1,5 @@
 import React from 'react';
+import BookList from "./components/BookList/BookList.js";
 import ApolloClient from "apollo-boost";
 import {ApolloProvider} from "react-apollo";
 
@@ -11,6 +12,7 @@ function App() {
     <ApolloProvider client={client}>
        <div className="App">
           This is apollo client
+          <BookList />
         </div>
     </ApolloProvider>
    
