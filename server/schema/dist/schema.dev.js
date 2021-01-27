@@ -101,7 +101,7 @@ var BookType = new GraphQLObjectType({
                 case 0:
                   _context2.prev = 0;
                   _context2.next = 3;
-                  return regeneratorRuntime.awrap(Author.find({
+                  return regeneratorRuntime.awrap(Author.findOne({
                     _id: parent.authorId
                   }));
 
