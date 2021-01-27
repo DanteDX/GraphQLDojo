@@ -53,7 +53,7 @@ const BookType = new GraphQLObjectType({
             type: AuthorType,
             resolve: async (parent,args) => {
                 try{
-                    return await Author.find({_id:parent.authorId});
+                    return await Author.findOne({_id:parent.authorId});
                 }catch(err){
                     return err;
                 }
