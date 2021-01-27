@@ -5,14 +5,15 @@ import {flowRight as compose} from "lodash";
 import {getBooksQuery,addBookMutation} from "../../Queries/Queries";
 
 function BookList(props){
-    console.log(props);
+    console.log(props.getBooksQuery.books);
     const clickHandler = e =>{
         props.addBookMutation({
             variables:{
-                name:'Sheldon Lee Cooper',
-                genre:"Physics",
-                authorId:"999"
-            }
+                name:'Lee Cooper',
+                genre:"Chemistry",
+                authorId:"989"
+            },
+            refetchQueries:[{query:getBooksQuery}]
         });
         console.log('Done!');
     };
